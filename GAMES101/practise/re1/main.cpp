@@ -59,12 +59,12 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     float right = top * aspect_ratio;
     float left = -right;
     
-    Eigen:Matrix4f m_ortho_trans = Eigen:Matrix4f:Identity();
+    Eigen:Matrix4f m_ortho_trans = Eigen::Matrix4f::Identity();
     m_ortho_trans(0,3) = -(right + left)/2.0;
     m_ortho_trans(1,3) = -(top + bottum)/2.0;
     m_ortho_trans(2,3) = -(zNear + zFar)/2.0;
 
-    Eigen:Matrix4f m_ortho_scale = Eigen:Matrix4f:Identity();
+    Eigen:Matrix4f m_ortho_scale = Eigen::Matrix4f::Identity();
     m_ortho_trans(0,0) = 2.0/(right - left);
     m_ortho_trans(1,1) = 2.0/(top - bottum);
     m_ortho_trans(2,2) = 2.0/(zNear - zFar);
