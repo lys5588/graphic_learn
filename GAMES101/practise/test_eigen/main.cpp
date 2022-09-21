@@ -8,6 +8,19 @@ using namespace Eigen;
 #define PI 3.14159265
 
 int main(){
+    float rotation_angle=45.0;
+    Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+
+    // TODO: Implement this function
+    // Create the model matrix for rotating the triangle around the Z axis.
+    // Then return it.
+    Eigen::Matrix4f translate;
+    translate << cos(rotation_angle/180.0*acos(-1)), -sin(rotation_angle/180.0*acos(-1)), 0.0, 0.0, sin(rotation_angle/180.0*acos(-1)),
+        cos(rotation_angle/180.0*acos(-1)), 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0;
+
+    model = translate * model;
+    cout<<"model"<<model<<endl;
+
     cout<<acos(-1)<<endl;
     float x=2,y=1;
     Vector3f v(x,y,1);
