@@ -1,0 +1,3 @@
+/home/parallels/Desktop/code/graphic_learn/GAMES101/practise/re0/CMakeFiles/rebuild_cache.dir
+/home/parallels/Desktop/code/graphic_learn/GAMES101/practise/re0/CMakeFiles/edit_cache.dir
+/home/parallels/Desktop/code/graphic_learn/GAMES101/practise/re0/CMakeFiles/Transformation.dir

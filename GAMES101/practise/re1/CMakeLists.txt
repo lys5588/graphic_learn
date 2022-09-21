@@ -4,7 +4,6 @@ project(Rasterizer)
 find_package(OpenCV REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
-set(OpenCV_LIBRARIES /usr/local/share/opencv-4.6.0)
 
 include_directories(/usr/local/include)
 
