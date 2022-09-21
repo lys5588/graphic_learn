@@ -37,19 +37,46 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
 {
     //eye_fov  视角 aspect_ratio width/height
     // Students will implement this function
+    //step:
+    //1. using perspective projection to squish
+    //2. using orthographic projection to transform into [-1,1]
 
-    Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
-    projection(0,0)=zNear;
-    projection(1,1)=zNear;
-    projection(2,2)=zNear+zFar;
-    projection(2,3)=-zNear*zFar;
-    projection(3,2)=1;
-    projection(3,3)=0;
+    Eigen::Matrix4f transform = Eigen::Matrix4f::Identity();
+    //1.
+    Eigen::Matrix4f m_p_ersp_to_ortho = Eigen::Matrix4f::Identity();
+    m_p_ersp_to_ortho(0,0)=zNear;
+    m_p_ersp_to_ortho(1,1)=zNear;
+    m_p_ersp_to_ortho(2,2)=zNear+zFar;
+    m_p_ersp_to_ortho(2,3)=-zNear*zFar;
+    m_p_ersp_to_ortho(3,2)=1;
+    m_p_ersp_to_ortho(3,3)=0;
+
+
+    //2.计算挤压后的l,r,b,t
+    float half_fov = eye_fov/2.0*MY_PI/180.0; //radium
+    float top = zNear * tan(half_fov);
+    float bottum = -top;
+    float right = top * aspect_ratio;
+    float left = -right;
+    
+    Eigen:Matrix4f m_ortho_trans = Eigen:Matrix4f:Identity();
+    m_ortho_trans(0,3) = -(right + left)/2.0;
+    m_ortho_trans(1,3) = -(top + bottum)/2.0;
+    m_ortho_trans(2,3) = -(zNear + zFar)/2.0;
+
+    Eigen:Matrix4f m_ortho_scale = Eigen:Matrix4f:Identity();
+    m_ortho_trans(0,0) = 2.0/(right - left);
+    m_ortho_trans(1,1) = 2.0/(top - bottum);
+    m_ortho_trans(2,2) = 2.0/(zNear - zFar);
+    
+    transform = m_ortho_scale * m_ortho_trans * m_p_ersp_to_ortho;
+
+
     // TODO: Implement this function
     // Create the projection matrix for the given parameters.
     // Then return it.
 
-    return projection;
+    return transform;
 }
 
 int main(int argc, const char** argv)
