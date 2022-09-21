@@ -8,6 +8,7 @@ using namespace Eigen;
 #define PI 3.14159265
 
 int main(){
+    cout<<acos(-1)<<endl;
     float x=2,y=1;
     Vector3f v(x,y,1);
     cout<<endl<<v<<endl;
