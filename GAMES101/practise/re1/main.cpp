@@ -19,16 +19,31 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
     return view;
 }
 
-Eigen::Matrix4f get_model_matrix(float rotation_angle)//need modification
+Eigen::Matrix4f get_model_matrix(float[] rotation_angle)//need modification
 {
-    Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
-    float cosx=cos(rotation_angle/180.0*MY_PI),sinx=sin(rotation_angle/180.0*MY_PI);
-    model.block<2,2>(0,0)<<cosx,-sinx,sinx,cosx;
+    
+    
+    float cosx=cos(rotation_angle[0]/180.0*MY_PI),sinx=sin(rotation_angle[0]/180.0*MY_PI);
+    Eigen::Matrix4f m_x = Eigen::Matrix4f::Identity();
+    m_z.block<2,2>(1,1)<<cosx,-sinx,sinx,cosx;
 
+    float cosy=cos(rotation_angle[1]/180.0*MY_PI),siny=sin(rotation_angle[1]/180.0*MY_PI);
+    Eigen::Matrix4f m_y = Eigen::Matrix4f::Identity();
+    m_y.block<3,3>(0,0)<<cosx,0,sinx,0,1,0,-sinx,0,cosx;
+
+    float cosz=cos(rotation_angle[2]/180.0*MY_PI),sinz=sin(rotation_angle[2]/180.0*MY_PI);
+    Eigen::Matrix4f m_z = Eigen::Matrix4f::Identity();
+    m_z.block<2,2>(0,0)<<cosx,-sinx,sinx,cosx;
+
+    Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+    model=x*y*z;
     // TODO: Implement this function
     // Create the model matrix for rotating the triangle around the Z axis.
     // Then return it.
-
+    cout<<"x"<<endl<<x<<endl;
+    cout<<"y"<<endl<<y<<endl;
+    cout<<"z"<<endl<<z<<endl;
+    cout<<"model"<<endl<<model<<endl;
     return model;
 }
 
@@ -81,7 +96,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
 
 int main(int argc, const char** argv)
 {
-    float angle = 0;
+    float angle[3] = {0,0,0};
     bool command_line = false;
     std::string filename = "output.png";
 
@@ -92,7 +107,7 @@ int main(int argc, const char** argv)
             filename = std::string(argv[3]);
         }
     }
-
+    //光栅化器实例
     rst::rasterizer r(700, 700);
 
     Eigen::Vector3f eye_pos = {0, 0, 5};
@@ -139,11 +154,26 @@ int main(int argc, const char** argv)
 
         std::cout << "frame count: " << frame_count++ << '\n';
 
-        if (key == 'a') {
-            angle += 10;
-        }
-        else if (key == 'd') {
-            angle -= 10;
+        float flex_angle=10;
+        switch(key){
+            'q': 
+            angle[0]+=flex_angle;
+            break;
+            'e':
+            angle[0]-=flex_angle;
+            break;
+            'a': 
+            angle[1]+=flex_angle;
+            break;
+            'd':
+            angle[1]-=flex_angle;
+            break;
+            'z': 
+            angle[2]+=flex_angle;
+            break;
+            'c':
+            angle[2]-=flex_angle;
+            break;
         }
     }
 
