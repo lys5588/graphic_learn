@@ -19,31 +19,31 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
     return view;
 }
 
-Eigen::Matrix4f get_model_matrix(float[] rotation_angle)//need modification
+Eigen::Matrix4f get_model_matrix(float rotation_angle[])//need modification
 {
     
     
     float cosx=cos(rotation_angle[0]/180.0*MY_PI),sinx=sin(rotation_angle[0]/180.0*MY_PI);
     Eigen::Matrix4f m_x = Eigen::Matrix4f::Identity();
-    m_z.block<2,2>(1,1)<<cosx,-sinx,sinx,cosx;
+    m_x.block<2,2>(1,1)<<cosx,-sinx,sinx,cosx;
 
     float cosy=cos(rotation_angle[1]/180.0*MY_PI),siny=sin(rotation_angle[1]/180.0*MY_PI);
     Eigen::Matrix4f m_y = Eigen::Matrix4f::Identity();
-    m_y.block<3,3>(0,0)<<cosx,0,sinx,0,1,0,-sinx,0,cosx;
+    m_y.block<3,3>(0,0)<<cosy,0,siny,0,1,0,-siny,0,cosy;
 
     float cosz=cos(rotation_angle[2]/180.0*MY_PI),sinz=sin(rotation_angle[2]/180.0*MY_PI);
     Eigen::Matrix4f m_z = Eigen::Matrix4f::Identity();
-    m_z.block<2,2>(0,0)<<cosx,-sinx,sinx,cosx;
+    m_z.block<2,2>(0,0)<<cosz,-sinz,sinz,cosz;
 
     Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
-    model=x*y*z;
+    model = m_x * m_y * m_z;
     // TODO: Implement this function
     // Create the model matrix for rotating the triangle around the Z axis.
     // Then return it.
-    cout<<"x"<<endl<<x<<endl;
-    cout<<"y"<<endl<<y<<endl;
-    cout<<"z"<<endl<<z<<endl;
-    cout<<"model"<<endl<<model<<endl;
+    std::cout<<"x"<<std::endl<<m_x<<std::endl;
+    std::cout<<"y"<<std::endl<<m_y<<std::endl;
+    std::cout<<"z"<<std::endl<<m_z<<std::endl;
+    std::cout<<"model"<<std::endl<<model<<std::endl;
     return model;
 }
 
@@ -102,9 +102,11 @@ int main(int argc, const char** argv)
 
     if (argc >= 3) {
         command_line = true;
-        angle = std::stof(argv[2]); // -r by default
-        if (argc == 4) {
-            filename = std::string(argv[3]);
+        angle[0] = std::stof(argv[2]); // -r by default
+        angle[1] = std::stof(argv[3]); // -r by default
+        angle[2] = std::stof(argv[4]); // -r by default
+        if (argc == 7) {
+            filename = std::string(argv[7]);
         }
     }
     //光栅化器实例
