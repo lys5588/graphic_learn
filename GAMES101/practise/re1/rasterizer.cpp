@@ -61,7 +61,7 @@ void rst::rasterizer::draw_line(Eigen::Vector3f begin, Eigen::Vector3f end)
         }
         Eigen::Vector3f point = Eigen::Vector3f(x, y, 1.0f);
         set_pixel(point,line_color);
-        for(i=0;x<xe;i++)
+        (i=0;x<xe;i++)
         {
             x=x+1;
             if(px<0)
