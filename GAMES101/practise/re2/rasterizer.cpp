@@ -59,8 +59,8 @@ static bool insideTriangle(int x, int y, const Eigen::Vector3f* _v)
     float res1 = e1.transpose() * vec1,
         res2 = e2.transpose() * vec2, 
         res3 = e3.transpose() * vec3;
-    std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
-    std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
+    // std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
+    // std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
     if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
         inside=true;
     }
@@ -145,7 +145,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         for(float j=b_sc;j<t_sc;j++){
             if(insideTriangle(int(i),int(j),t.v)){
                 //compute the interpolation result of z
-                alpha, beta, gamma = computeBarycentric2D(x, y, t.v);
+                alpha, beta, gamma = computeBarycentric2D(i, j, t.v);
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
                 float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
                 z_interpolated *= w_reciprocal;
