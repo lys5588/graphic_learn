@@ -40,9 +40,20 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 }
 
 //to fill
-static bool insideTriangle(int x, int y, const Vector3f* _v)
-{   
+static bool insideTriangle(int x, int y, const Eigen::Vector3f* _v)
+{      
+    bool inside=false;
+    Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
+    Eigen::Vector3f point(x,y,0);
+    float res1=point*v0,res2=point*v1,res3=point*v2;
+    if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
+        inside=true;
+    }
+    else if(res1 * res2 < 0 && res2 * res3 < 0 && res3 * res1 < 0 ){
+        inside=true;
+    }
     // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
+    return inside;
 }
 
 static std::tuple<float, float, float> computeBarycentric2D(float x, float y, const Vector3f* v)
