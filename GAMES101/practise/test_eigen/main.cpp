@@ -12,9 +12,9 @@ static bool insideTriangle(int x, int y, const Eigen::Vector3f* _v)
     bool inside=false;
     Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
     Eigen::Vector3f point(float(x),float(y),0);
-    float res1 = point * v0.transpose(),
-        res2 = point * v1.transpose(), 
-        res3 = point * v2.transpose();
+    float res1 = point.transpose() * v0,
+        res2 = point.transpose() * v1, 
+        res3 = point.transpose() * v2;
     if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
         inside=true;
     }
