@@ -44,8 +44,23 @@ static bool insideTriangle(int x, int y, const Eigen::Vector3f* _v)
 {      
     bool inside=false;
     Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
-    Eigen::Vector3f point(x,y,0);
-    float res1=point*v0,res2=point*v1,res3=point*v2;
+    Eigen::Vector3f point(float(x),float(y),0);
+    //triangle edge and point-to-point vector
+    Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
+
+    e1<<(v1(0)-v0(0)),(v1(1)-v0(1)),0;
+    e2<<(v2(0)-v1(0)),(v2(1)-v1(1)),0;
+    e3<<(v0(0)-v2(0)),(v0(1)-v2(1)),0;
+    
+    vec1<<(point(0)-v0(0)),(point(1)-v0(1)),0;
+    vec1<<(point(0)-v1(0)),(point(1)-v1(1)),0;
+    vec1<<(point(0)-v2(0)),(point(1)-v2(1)),0;
+
+    float res1 = e1.transpose() * vec1,
+        res2 = e2.transpose() * vec2, 
+        res3 = e3.transpose() * vec3;
+    std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
+    std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
     if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
         inside=true;
     }
@@ -117,6 +132,35 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
 void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     auto v = t.toVector4();
     
+    //using INT_MIN as boingbox border
+    float alpha,beta,gamma;
+    float l_sc=int(std::min(std::min(v[0](0),v[1](0)),v[2](0))),
+        r_sc=int(std::max(std::max(v[0](0),v[1](0)),v[2](0)))+1,
+        b_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1))),
+        t_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1)))+1;
+
+
+
+    for(float i = l_sc;i<r_sc;i++){
+        for(float j=b_sc;j<t_sc;j++){
+            if(insideTriangle(int(i),int(j),t.v)){
+                //compute the interpolation result of z
+                alpha, beta, gamma = computeBarycentric2D(x, y, t.v);
+                float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
+                float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
+                z_interpolated *= w_reciprocal;
+
+                //setcolor
+                if(-z_interpolated < depth_buf[get_index(i,j)]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
+                    // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
+                    set_pixel({i,j,1},t.getColor());
+                    depth_buf[get_index(i,j)] = -z_interpolated;//设置像素颜色，修改像素当前深度   
+                }
+            }
+        }
+    }
+
+
     // TODO : Find out the bounding box of current triangle.
     // iterate through the pixel and find if the current pixel is inside the triangle
 
