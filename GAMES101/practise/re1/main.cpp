@@ -156,24 +156,25 @@ int main(int argc, const char** argv)
 
         float flex_angle=10;
         switch(key){
-            'q': 
+            case 'q': 
             angle[0]+=flex_angle;
             break;
-            'e':
+            case 'e':
             angle[0]-=flex_angle;
             break;
-            'a': 
+            case 'a': 
             angle[1]+=flex_angle;
             break;
-            'd':
+            case 'd':
             angle[1]-=flex_angle;
             break;
-            'z': 
+            case 'z': 
             angle[2]+=flex_angle;
             break;
-            'c':
+            case 'c':
             angle[2]-=flex_angle;
             break;
+            
         }
     }
 
