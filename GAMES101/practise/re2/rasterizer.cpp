@@ -184,7 +184,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
             if(insideTriangle(i+0.5,j+0.5,t.v)){
                 std::cout<<"compare "<<insideTriangle(i+0.5,j+0.5,t.v)<<" "<<insideTriangle_my(i+0.5,j+0.5,t.v)<<std::endl;
                 std::cout<<"point"<<i<<j<<std::endl;
-                std::cout<<v<<std::endl;
+                std::cout<<v[0]<<v[1]<<v[2]<<std::endl;
                 // std::cout<<"hello"<<std::endl;
                 //compute the interpolation result of z
                 auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
