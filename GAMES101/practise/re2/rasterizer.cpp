@@ -135,10 +135,11 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     //using INT_MIN as boingbox border
     float alpha,beta,gamma;
     float l_sc=int(std::min(std::min(v[0](0),v[1](0)),v[2](0))),
-        r_sc=int(std::max(std::max(v[0](0),v[1](0)),v[2](0)))+1,
+        r_sc=int(std::max(std::max(v[0](0),v[1](0)),v[2](0)
+        ))+1,
         b_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1))),
         t_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1)))+1;
-    std::cout<<l_sc<<" "<<r_sc<<" "<<b_sc<<" "<<t_sc<<endl;
+    std::cout<<l_sc<<" "<<r_sc<<" "<<b_sc<<" "<<t_sc<<std::endl;
 
 
     for(float i = l_sc;i<r_sc;i++){
