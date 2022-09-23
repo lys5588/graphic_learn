@@ -40,7 +40,7 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 }
 
 //to fill
-static bool insideTriangle_my(float x, float y, const Eigen::Vector3f* _v)
+static bool insideTriangle(float x, float y, const Eigen::Vector3f* _v)
 {      
     bool inside=-1;
     for(int i=0;i<3;i++){
@@ -59,40 +59,10 @@ static bool insideTriangle_my(float x, float y, const Eigen::Vector3f* _v)
 
 
     }
-
-}
-
-
-// Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
-static bool insideTriangle(float x, float y, const Vector3f* _v)
-{   
-    // 0 means negative, 1 means positive
-    int flag = -1;
-
-    for(int i = 0; i < 3; i++) {
-        // the current point
-        Eigen::Vector3f p0 = {x, y, 0};
-        // the 1st vertex
-        Eigen::Vector3f p1 = _v[i];
-        // the 2nd vertex
-        Eigen::Vector3f p2 = _v[(i+1)%3];
-        
-        // the 1st vector (p1-p0)
-        Eigen::Vector3f v1 = p1-p0;
-        // the 2nd vector (p1-p2)
-        Eigen::Vector3f v2 = p1-p2;
-
-        // get the cross product
-        float cp = v1.cross(v2).z();
-        if(cp == 0) continue;
-
-        int sign = cp < 0 ? 0: 1;
-        if(flag == -1) flag = sign;
-        if(flag != sign) return false;
-    }
-
     return true;
 }
+
+
 
 static std::tuple<float, float, float> computeBarycentric2D(float x, float y, const Vector3f* v)
 {
@@ -172,7 +142,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     for(int i = l_sc;i<r_sc;i++){
         for(int j=b_sc;j<t_sc;j++){
             
-            if(insideTriangle_my(i+0.5,j+0.5,t.v)){
+            if(insideTriangle(i+0.5,j+0.5,t.v)){
                 // std::cout<<"compare "<<insideTriangle(i+0.5,j+0.5,t.v)<<" "<<insideTriangle_my(i+0.5,j+0.5,t.v)<<std::endl;
                 // std::cout<<"point"<<i<<" "<<j<<std::endl;
                 // std::cout<<"0"<<v[0]<<"1"<<v[1]<<"2"<<v[2]<<std::endl;
