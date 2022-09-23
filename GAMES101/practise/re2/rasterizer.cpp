@@ -48,13 +48,13 @@ static bool insideTriangle(float x, float y, const Eigen::Vector3f* _v)
     //triangle edge and point-to-point vector
     Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
 
-    e1<<(v1(0)-v0(0)),(v1(1)-v0(1)),0;
-    e2<<(v2(0)-v1(0)),(v2(1)-v1(1)),0;
-    e3<<(v0(0)-v2(0)),(v0(1)-v2(1)),0;
+    e1=v1-v0;
+    e2=v2-v1;
+    e3=v0-v2;
     
-    vec1<<(point(0)-v0(0)),(point(1)-v0(1)),0;
-    vec1<<(point(0)-v1(0)),(point(1)-v1(1)),0;
-    vec1<<(point(0)-v2(0)),(point(1)-v2(1)),0;
+    vec1=point-v0;
+    vec1=point-v1;
+    vec1=point-v2;
 
     float res1 = e1.transpose() * vec1,
         res2 = e2.transpose() * vec2, 
@@ -164,6 +164,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
                     pixel<< i,j,z_interpolated;
                     set_pixel(pixel,t.getColor());
                     depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
+                    std::cout<<"point: \n"<<pixel<<std::endl<<"color: \n"<<t.getColor()<<std::endl;
                 }
             }
         }
