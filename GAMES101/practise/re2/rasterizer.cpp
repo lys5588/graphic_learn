@@ -117,7 +117,7 @@ void rst::rasterizer::draw(pos_buf_id pos_buffer, ind_buf_id ind_buffer, col_buf
         t.setColor(1, col_y[0], col_y[1], col_y[2]);
         t.setColor(2, col_z[0], col_z[1], col_z[2]);
 
-        rasterize_triangle(t);
+        rasterize_triangle_MAXX(t);
     }
 }
 //to fill up
@@ -187,13 +187,21 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
         t_sc=int(std::max(std::max(v[0](1),v[1](1)),v[2](1)))+1;
 
 
-    for(int i = l_sc;i<r_sc;i++){
-        for(int j=b_sc;j<t_sc;j++){
+    for(int x = l_sc;x<r_sc;x++){
+        for(int y=b_sc;y<t_sc;y++){
             
-            if(insideTriangle(i+0.5,j+0.5,t.v)){
+            float transparency=0;
+            float x_list[2]={0.25,0.75};
+            float y_list[2]={0.25,0.75};
+            for(auto x_incre:x_list){
+                for(auto y_incre:y_list){
+                    if(insideTriangle(x+x_incre,y+y_incre,t.v)) transparency+=0.25;
+                }
+            }
+            if(transparency>0){
                 
                 //compute the interpolation result of z
-                auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
+                auto[alpha, beta, gamma] = computeBarycentric2D(x+0.5, y+0.5, t.v);
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
                 float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
                 z_interpolated *= w_reciprocal;
@@ -206,7 +214,7 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
                     Eigen::Vector3f pixel;
                 
                     pixel<< i,j,z_interpolated;
-                    set_pixel(pixel,t.getColor());
+                    set_pixel(pixel,t.getColor()*transparency);
                     depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
                     }
             }
