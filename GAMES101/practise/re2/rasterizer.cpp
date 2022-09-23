@@ -40,36 +40,36 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 }
 
 //to fill
-// static bool insideTriangle(float x, float y, const Eigen::Vector3f* _v)
-// {      
-//     bool inside=false;
-//     Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
-//     Eigen::Vector3f point(x,y,0);
-//     //triangle edge and point-to-point vector
-//     Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
+static bool insideTriangle_my(float x, float y, const Eigen::Vector3f* _v)
+{      
+    bool inside=false;
+    Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
+    Eigen::Vector3f point(x,y,0);
+    //triangle edge and point-to-point vector
+    Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
 
-//     e1=v1-v0;
-//     e2=v2-v1;
-//     e3=v0-v2;
+    e1=v1-v0;
+    e2=v2-v1;
+    e3=v0-v2;
     
-//     vec1=point-v0;
-//     vec1=point-v1;
-//     vec1=point-v2;
+    vec1=point-v0;
+    vec1=point-v1;
+    vec1=point-v2;
 
-//     float res1 = e1.transpose() * vec1,
-//         res2 = e2.transpose() * vec2, 
-//         res3 = e3.transpose() * vec3;
-//     // std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
-//     // std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
-//     if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
-//         inside=true;
-//     }
-//     else if(res1 * res2 < 0 && res2 * res3 < 0 && res3 * res1 < 0 ){
-//         inside=true;
-//     }
-//     // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
-//     return inside;
-// }
+    float res1 = e1.transpose() * vec1,
+        res2 = e2.transpose() * vec2, 
+        res3 = e3.transpose() * vec3;
+    // std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
+    // std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
+    if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
+        inside=true;
+    }
+    else if(res1 * res2 < 0 && res2 * res3 < 0 && res3 * res1 < 0 ){
+        inside=true;
+    }
+    // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
+    return inside;
+}
 
 
 // Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
@@ -182,6 +182,8 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         for(int j=b_sc;j<t_sc;j++){
             // std::cout<<"point"<<i<<j<<std::endl;
             if(insideTriangle(i+0.5,j+0.5,t.v)){
+                cout<<"compare "<<insideTriangle(i+0.5,j+0.5,t.v)<<" "<<insideTrianglemy(i+0.5,j+0.5,t.v)<<endl;
+
                 // std::cout<<"hello"<<std::endl;
                 //compute the interpolation result of z
                 auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
