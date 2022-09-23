@@ -154,7 +154,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
                 
                     pixel<< i,j,z_interpolated;
                     set_pixel(pixel,t.getColor());
-                    std::cout<<t.getColor()<<"color"<<endl;
+                    std::cout<<t.getColor()<<"color"<<std::endl;
                     depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
                     }
             }
