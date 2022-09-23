@@ -52,9 +52,9 @@ static bool insideTriangle(float x, float y, const Vector3f* _v)
         Eigen::Vector3f p2 = _v[(i+1)%3];
         
         // the 1st vector (p1-p0)
-        Eigen::Vector3f v1 = p1-p0;
+        Eigen::Vector3f v1 = p0-p1;
         // the 2nd vector (p1-p2)
-        Eigen::Vector3f v2 = p1-p2;
+        Eigen::Vector3f v2 = p2-p1;
 
         // get the cross product
         float cp = v1.cross(v2).z();
