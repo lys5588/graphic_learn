@@ -146,8 +146,9 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     // std::cout<<l_sc<<" "<<r_sc<<" "<<b_sc<<" "<<t_sc<<std::endl;
 
 
-    for(float i = l_sc;i<r_sc;i++){
-        for(float j=b_sc;j<t_sc;j++){
+    for(int i = l_sc;i<r_sc;i++){
+        for(int j=b_sc;j<t_sc;j++){
+            std::cout<<"point"<<i<<j<<std::endl;
             if(insideTriangle(i+0.5,j+0.5,t.v)){
                 std::cout<<"hello"<<std::endl;
                 //compute the interpolation result of z
@@ -160,7 +161,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
                 //遮挡判断
                 int index=get_index(i,j);
                 if(z_interpolated < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
-                    std::cout<<"point: "<<i<<j<<std::endl;
+                    // std::cout<<"point: "<<i<<j<<std::endl;
                     // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
                     Eigen::Vector3f pixel;
                     // std::cout<<"point: \n"<<pixel<<std::endl<<"color: \n"<<"current depth: "<<depth_buf[index]<<std::endl<<t.getColor()<<std::endl;
