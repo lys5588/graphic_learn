@@ -59,7 +59,7 @@ static bool insideTriangle(float x, float y, const Vector3f* _v)
         // get the cross product
         float cp = v1.cross(v2).z();
         if(cp == 0) continue;
-
+        cout<<p0<<" "<<p1<<" "<<p2<<" "<<cp<<endl;
         cout<<v1<<" "<<v2<<" "<<cp<<endl;
         int sign = cp < 0 ? 0: 1;
         if(flag == -1) flag = sign;
