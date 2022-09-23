@@ -22,7 +22,7 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
     return view;
 }
 
-Eigen::Matrix4f get_model_matrix(float rotation_angle)
+Eigen::Matrix4f get_model_matrix(float rotation_angle[])
 {
     float cosx=cos(rotation_angle[0]/180.0*MY_PI),sinx=sin(rotation_angle[0]/180.0*MY_PI);
     Eigen::Matrix4f m_x = Eigen::Matrix4f::Identity();
@@ -96,7 +96,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
 
 int main(int argc, const char** argv)
 {
-    float angle = 0;
+    float angle[3] = {0,0,0};
     bool command_line = false;
     std::string filename = "output.png";
 
