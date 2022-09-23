@@ -73,5 +73,5 @@ int main(){
     int x=433 ,y=307;
     Eigen::Vector3f p0(542,434,0),p1(138,223,2),p2(434,307,9);
     Eigen::Vector3f _v[3]={p0,p1,p2};
-    std::cout<<insideTriangle(x,y,_v);
+    std::cout<<insideTriangle_my(x,y,_v);
 }
