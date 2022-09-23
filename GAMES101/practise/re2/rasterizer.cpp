@@ -149,6 +149,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
     for(float i = l_sc;i<r_sc;i++){
         for(float j=b_sc;j<t_sc;j++){
             if(insideTriangle(i+0.5,j+0.5,t.v)){
+                std::cout<<"hello"<<std::endl;
                 //compute the interpolation result of z
                 auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
