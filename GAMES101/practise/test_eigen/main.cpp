@@ -26,7 +26,7 @@ static bool insideTriangle_my(float x, float y, const Eigen::Vector3f* _v)
     float res1 = e1.transpose() * vec1,
         res2 = e2.transpose() * vec2, 
         res3 = e3.transpose() * vec3;
-    // std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
+    std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
     std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
     if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
         inside=true;
