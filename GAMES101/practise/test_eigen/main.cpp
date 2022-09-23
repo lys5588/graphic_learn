@@ -60,7 +60,7 @@ static bool insideTriangle(float x, float y, const Vector3f* _v)
         float cp = v1.cross(v2).z();
         if(cp == 0) continue;
 
-        cout<<cp<<endl;
+        cout<<v1<<" "<<v2<<" "<<cp<<endl;
         int sign = cp < 0 ? 0: 1;
         if(flag == -1) flag = sign;
         if(flag != sign) return false;
