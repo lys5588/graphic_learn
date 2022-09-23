@@ -193,7 +193,7 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
         for(int y=b_sc;y<t_sc;y++){
             
             float transparency=0;
-            vector<float> x_list,y_list;
+            std::vector<float> x_list,y_list;
             for(int i=0;i<MAXX_n-2;i++){
                 x_list.push_back(1.0/MAXX_n*(i+1));
                 y_list.push_back(1.0/MAXX_n*(i+1));
