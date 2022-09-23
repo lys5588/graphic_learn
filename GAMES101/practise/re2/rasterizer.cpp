@@ -177,7 +177,9 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 //Screen space rasterization
 void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
     auto v = t.toVector4();
-    
+    int MAXX_n =16;
+
+
     //using INT_MIN as boingbox border
     float alpha,beta,gamma;
     float l_sc=int(std::min(std::min(v[0](0),v[1](0)),v[2](0))),
@@ -191,11 +193,14 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
         for(int y=b_sc;y<t_sc;y++){
             
             float transparency=0;
-            float x_list[2]={0.25,0.75};
-            float y_list[2]={0.25,0.75};
+            vector<float> x_list,y_list;
+            for(int i=0;i<MAXX_n-2;i++){
+                x_list.append(1.0/MAXX_n*(i+1));
+                y_list.append(1.0/MAXX_n*(i+1));
+            }
             for(auto x_incre:x_list){
                 for(auto y_incre:y_list){
-                    if(insideTriangle(x+x_incre,y+y_incre,t.v)) transparency+=0.25;
+                    if(insideTriangle(x+x_incre,y+y_incre,t.v)) transparency+=1.0/((MAXX_n-2)*(MAXX_n-2));
                 }
             }
             if(transparency>0){
