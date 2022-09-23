@@ -138,7 +138,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         r_sc=int(std::max(std::max(v[0](0),v[1](0)),v[2](0)))+1,
         b_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1))),
         t_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1)))+1;
-
+    std::cout<<l_sc<<" "<<r_sc<<" "<<b_sc<<" "<<t_sc<<endl;
 
 
     for(float i = l_sc;i<r_sc;i++){
