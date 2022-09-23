@@ -177,7 +177,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 //Screen space rasterization
 void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
     auto v = t.toVector4();
-    int MAXX_n =16;
+    int MAXX_n =4;
 
 
     //using INT_MIN as boingbox border
