@@ -160,15 +160,15 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
                 //遮挡判断
                 int index=get_index(i,j);
                 if(z_interpolated < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
-                    
+                    std::cout<<"point: "<<i<<j<<std::endl;
                     // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
                     Eigen::Vector3f pixel;
-                    std::cout<<"point: \n"<<pixel<<std::endl<<"color: \n"<<"current depth: "<<depth_buf[index]<<std::endl<<t.getColor()<<std::endl;
+                    // std::cout<<"point: \n"<<pixel<<std::endl<<"color: \n"<<"current depth: "<<depth_buf[index]<<std::endl<<t.getColor()<<std::endl;
                 
                     pixel<< i,j,z_interpolated;
                     set_pixel(pixel,t.getColor());
                     depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
-                    std::cout<<"current depth: "<<depth_buf[index];
+                    // std::cout<<"current depth: "<<depth_buf[index];
                     }
             }
         }
