@@ -41,10 +41,10 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle[])
     // TODO: Implement this function
     // Create the model matrix for rotating the triangle around the Z axis.
     // Then return it.
-    std::cout<<"x"<<std::endl<<m_x<<std::endl;
-    std::cout<<"y"<<std::endl<<m_y<<std::endl;
-    std::cout<<"z"<<std::endl<<m_z<<std::endl;
-    std::cout<<"model"<<std::endl<<model<<std::endl;
+    // std::cout<<"x"<<std::endl<<m_x<<std::endl;
+    // std::cout<<"y"<<std::endl<<m_y<<std::endl;
+    // std::cout<<"z"<<std::endl<<m_z<<std::endl;
+    // std::cout<<"model"<<std::endl<<model<<std::endl;
     return model;
 }
 
