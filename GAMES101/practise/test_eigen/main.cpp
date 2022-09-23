@@ -7,27 +7,27 @@ using namespace Eigen;
 
 #define PI 3.14159265
 
-static bool insideTriangle(int x, int y, const Eigen::Vector3f* _v)
+static bool insideTriangle_my(float x, float y, const Eigen::Vector3f* _v)
 {      
     bool inside=false;
     Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
-    Eigen::Vector3f point(float(x),float(y),0);
+    Eigen::Vector3f point(x,y,0);
     //triangle edge and point-to-point vector
     Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
 
-    e1<<(v1(0)-v0(0)),(v1(1)-v0(1)),0;
-    e2<<(v2(0)-v1(0)),(v2(1)-v1(1)),0;
-    e3<<(v0(0)-v2(0)),(v0(1)-v2(1)),0;
+    e1=v1-v0;
+    e2=v2-v1;
+    e3=v0-v2;
     
-    vec1<<(point(0)-v0(0)),(point(1)-v0(1)),0;
-    vec1<<(point(0)-v1(0)),(point(1)-v1(1)),0;
-    vec1<<(point(0)-v2(0)),(point(1)-v2(1)),0;
+    vec1=point-v0;
+    vec1=point-v1;
+    vec1=point-v2;
 
     float res1 = e1.transpose() * vec1,
         res2 = e2.transpose() * vec2, 
         res3 = e3.transpose() * vec3;
-    std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
-    std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
+    // std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
+    // std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
     if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
         inside=true;
     }
@@ -37,6 +37,7 @@ static bool insideTriangle(int x, int y, const Eigen::Vector3f* _v)
     // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
     return inside;
 }
+
 
 int main(){
     // float rotation_angle=45.0;
