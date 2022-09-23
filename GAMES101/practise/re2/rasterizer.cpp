@@ -154,7 +154,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
                 
                     pixel<< i,j,z_interpolated;
                     set_pixel(pixel,t.getColor());
-                    std::cout<<t.getColor()<<"color"<<std::endl;
+                    // std::cout<<t.getColor()<<"color"<<std::endl;
                     depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
                     }
             }
@@ -204,7 +204,7 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
                 }
             }
             if(transparency>0){
-                std::cout<<transparency<<std::endl;
+                // std::cout<<transparency<<std::endl;
                 //compute the interpolation result of z
                 auto[alpha, beta, gamma] = computeBarycentric2D(x+0.5, y+0.5, t.v);
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
