@@ -139,9 +139,9 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         ))+1,
         b_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1))),
         t_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1)))+1;
-    std::cout<<v[0][0]<<" "<<v[0][1]<<endl;
-    std::cout<<v[1][0]<<" "<<v[1][1]<<endl;
-    std::cout<<v[2][0]<<" "<<v[2][1]<<endl;
+    std::cout<<v[0][0]<<" "<<v[0][1]<<std::endl;
+    std::cout<<v[1][0]<<" "<<v[1][1]<<std::endl;
+    std::cout<<v[2][0]<<" "<<v[2][1]<<std::endl;
     
     std::cout<<l_sc<<" "<<r_sc<<" "<<b_sc<<" "<<t_sc<<std::endl;
 
