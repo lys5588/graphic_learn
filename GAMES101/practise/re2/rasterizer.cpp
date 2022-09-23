@@ -139,28 +139,31 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         ))+1,
         b_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1))),
         t_sc=int(std::max(std::max(v[0](1),v[1](1)),v[2](1)))+1;
-    std::cout<<v[0][0]<<" "<<v[0][1]<<std::endl;
-    std::cout<<v[1][0]<<" "<<v[1][1]<<std::endl;
-    std::cout<<v[2][0]<<" "<<v[2][1]<<std::endl;
+    // std::cout<<v[0][0]<<" "<<v[0][1]<<std::endl;
+    // std::cout<<v[1][0]<<" "<<v[1][1]<<std::endl;
+    // std::cout<<v[2][0]<<" "<<v[2][1]<<std::endl;
     
-    std::cout<<l_sc<<" "<<r_sc<<" "<<b_sc<<" "<<t_sc<<std::endl;
+    // std::cout<<l_sc<<" "<<r_sc<<" "<<b_sc<<" "<<t_sc<<std::endl;
 
 
     for(float i = l_sc;i<r_sc;i++){
         for(float j=b_sc;j<t_sc;j++){
             if(insideTriangle(int(i),int(j),t.v)){
                 //compute the interpolation result of z
-                std::tie(alpha, beta, gamma) = computeBarycentric2D(i, j, t.v);
+                auto[alpha, beta, gamma] = computeBarycentric2D(i, j, t.v);
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
                 float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
                 z_interpolated *= w_reciprocal;
 
                 //setcolor
                 //遮挡判断
-                if(-z_interpolated < depth_buf[get_index(i,j)]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
+                int index=get_index(i,j);
+                if(z_interpolated < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
                     // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
-                    set_pixel({i,j,1},t.getColor());
-                    depth_buf[get_index(i,j)] = -z_interpolated;//设置像素颜色，修改像素当前深度   
+                    Eigen::Vector3f pixel;
+                    pixel<< i,j,1;
+                    set_pixel(pixel,t.getColor());
+                    depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
                 }
             }
         }
