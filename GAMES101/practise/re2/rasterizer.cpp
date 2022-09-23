@@ -199,7 +199,7 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
                 }
             }
             if(transparency>0){
-                
+                std::cout<<transparency<<std::endl;
                 //compute the interpolation result of z
                 auto[alpha, beta, gamma] = computeBarycentric2D(x+0.5, y+0.5, t.v);
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
