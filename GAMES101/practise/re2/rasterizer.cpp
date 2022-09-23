@@ -213,7 +213,7 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
                     // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
                     Eigen::Vector3f pixel;
                 
-                    pixel<< i,j,z_interpolated;
+                    pixel<< x,y,z_interpolated;
                     set_pixel(pixel,t.getColor()*transparency);
                     depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
                     }
