@@ -40,35 +40,67 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 }
 
 //to fill
-static bool insideTriangle(float x, float y, const Eigen::Vector3f* _v)
-{      
-    bool inside=false;
-    Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
-    Eigen::Vector3f point(x,y,0);
-    //triangle edge and point-to-point vector
-    Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
+// static bool insideTriangle(float x, float y, const Eigen::Vector3f* _v)
+// {      
+//     bool inside=false;
+//     Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
+//     Eigen::Vector3f point(x,y,0);
+//     //triangle edge and point-to-point vector
+//     Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
 
-    e1=v1-v0;
-    e2=v2-v1;
-    e3=v0-v2;
+//     e1=v1-v0;
+//     e2=v2-v1;
+//     e3=v0-v2;
     
-    vec1=point-v0;
-    vec1=point-v1;
-    vec1=point-v2;
+//     vec1=point-v0;
+//     vec1=point-v1;
+//     vec1=point-v2;
 
-    float res1 = e1.transpose() * vec1,
-        res2 = e2.transpose() * vec2, 
-        res3 = e3.transpose() * vec3;
-    // std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
-    // std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
-    if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
-        inside=true;
+//     float res1 = e1.transpose() * vec1,
+//         res2 = e2.transpose() * vec2, 
+//         res3 = e3.transpose() * vec3;
+//     // std::cout<<e1<<endl<<e2<<endl<<e3<<endl<<endl<<vec1<<endl<<vec2<<endl<<vec3<<endl;
+//     // std::cout<<res1<<endl<<res2<<endl<<res3<<endl;
+//     if(res1 * res2 > 0 && res2 * res3 > 0 && res3 * res1 > 0 ){
+//         inside=true;
+//     }
+//     else if(res1 * res2 < 0 && res2 * res3 < 0 && res3 * res1 < 0 ){
+//         inside=true;
+//     }
+//     // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
+//     return inside;
+// }
+
+
+// Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
+static bool insideTriangle(float x, float y, const Vector3f* _v)
+{   
+    // 0 means negative, 1 means positive
+    int flag = -1;
+
+    for(int i = 0; i < 3; i++) {
+        // the current point
+        Eigen::Vector3f p0 = {x, y, 0};
+        // the 1st vertex
+        Eigen::Vector3f p1 = _v[i];
+        // the 2nd vertex
+        Eigen::Vector3f p2 = _v[(i+1)%3];
+        
+        // the 1st vector (p1-p0)
+        Eigen::Vector3f v1 = p1-p0;
+        // the 2nd vector (p1-p2)
+        Eigen::Vector3f v2 = p1-p2;
+
+        // get the cross product
+        float cp = v1.cross(v2).z();
+        if(cp == 0) continue;
+
+        int sign = cp < 0 ? 0: 1;
+        if(flag == -1) flag = sign;
+        if(flag != sign) return false;
     }
-    else if(res1 * res2 < 0 && res2 * res3 < 0 && res3 * res1 < 0 ){
-        inside=true;
-    }
-    // TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]
-    return inside;
+
+    return true;
 }
 
 static std::tuple<float, float, float> computeBarycentric2D(float x, float y, const Vector3f* v)
