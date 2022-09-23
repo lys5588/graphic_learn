@@ -182,7 +182,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
         for(int j=b_sc;j<t_sc;j++){
             // std::cout<<"point"<<i<<j<<std::endl;
             if(insideTriangle(i+0.5,j+0.5,t.v)){
-                cout<<"compare "<<insideTriangle(i+0.5,j+0.5,t.v)<<" "<<insideTriangle_my(i+0.5,j+0.5,t.v)<<std::endl;
+                std::cout<<"compare "<<insideTriangle(i+0.5,j+0.5,t.v)<<" "<<insideTriangle_my(i+0.5,j+0.5,t.v)<<std::endl;
 
                 // std::cout<<"hello"<<std::endl;
                 //compute the interpolation result of z
