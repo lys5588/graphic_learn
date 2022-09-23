@@ -195,8 +195,8 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
             float transparency=0;
             vector<float> x_list,y_list;
             for(int i=0;i<MAXX_n-2;i++){
-                x_list.append(1.0/MAXX_n*(i+1));
-                y_list.append(1.0/MAXX_n*(i+1));
+                x_list.push_back(1.0/MAXX_n*(i+1));
+                y_list.push_back(1.0/MAXX_n*(i+1));
             }
             for(auto x_incre:x_list){
                 for(auto y_incre:y_list){
