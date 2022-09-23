@@ -40,11 +40,11 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
 }
 
 //to fill
-static bool insideTriangle(int x, int y, const Eigen::Vector3f* _v)
+static bool insideTriangle(float x, float y, const Eigen::Vector3f* _v)
 {      
     bool inside=false;
     Eigen::Vector3f v0=_v[0],v1=_v[1],v2=_v[2];
-    Eigen::Vector3f point(float(x),float(y),0);
+    Eigen::Vector3f point(x,y,0);
     //triangle edge and point-to-point vector
     Eigen::Vector3f e1,e2,e3,vec1,vec2,vec3;
 
@@ -148,9 +148,9 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 
     for(float i = l_sc;i<r_sc;i++){
         for(float j=b_sc;j<t_sc;j++){
-            if(insideTriangle(int(i),int(j),t.v)){
+            if(insideTriangle(i+0.5,j+0.5,t.v)){
                 //compute the interpolation result of z
-                auto[alpha, beta, gamma] = computeBarycentric2D(i, j, t.v);
+                auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
                 float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
                 z_interpolated *= w_reciprocal;
