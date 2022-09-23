@@ -208,7 +208,7 @@ void rst::rasterizer::rasterize_triangle_MAXX(const Triangle& t) {
 
                 //setcolor
                 //遮挡判断
-                int index=get_index(i,j);
+                int index=get_index(x,y);
                 if(z_interpolated < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
                     // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
                     Eigen::Vector3f pixel;
