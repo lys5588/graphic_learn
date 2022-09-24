@@ -259,6 +259,44 @@ static Eigen::Vector2f interpolate(float alpha, float beta, float gamma, const E
 //Screen space rasterization
 void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eigen::Vector3f, 3>& view_pos) 
 {   
+    auto v = t.toVector4();
+    
+    //using INT_MIN as boingbox border
+    float alpha,beta,gamma;
+    float l_sc=int(std::min(std::min(v[0](0),v[1](0)),v[2](0))),
+        r_sc=int(std::max(std::max(v[0](0),v[1](0)),v[2](0)
+        ))+1,
+        b_sc=int(std::min(std::min(v[0](1),v[1](1)),v[2](1))),
+        t_sc=int(std::max(std::max(v[0](1),v[1](1)),v[2](1)))+1;
+
+
+    for(int i = l_sc;i<r_sc;i++){
+        for(int j=b_sc;j<t_sc;j++){
+            
+            if(insideTriangle(i+0.5,j+0.5,t.v)){
+                
+                //compute the interpolation result of z
+                auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
+                float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
+                float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
+                z_interpolated *= w_reciprocal;
+
+                //setcolor
+                //遮挡判断
+                int index=get_index(i,j);
+                if(z_interpolated < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
+                    // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
+                    Eigen::Vector3f pixel;
+                
+                    pixel<< i,j,z_interpolated;
+                    set_pixel(pixel,t.getColor());
+                    // std::cout<<t.getColor()<<"color"<<std::endl;
+                    depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
+                    }
+            }
+        }
+    }
+
     std::cout<<"t:\n"<<t.v<<std::endl;
     std::cout<<"view_point : \n 1"<<view_pos[0]<<"\n 2 "<<view_pos[1]<<"\n 3 "<<view_pos[2]<<std::endl;
     // TODO: From your HW3, get the triangle rasterization code.
