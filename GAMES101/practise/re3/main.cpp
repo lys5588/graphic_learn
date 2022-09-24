@@ -167,7 +167,7 @@ Eigen::Vector3f texture_fragment_shader(const fragment_shader_payload& payload)
         specular=ks.cwiseProduct(light.intensity)/length2;
         specular *= std::pow(std::max(0.0f,normal.normalized().dot(h)),p);
 
-        result_color+=(ambient,diffuse,specular);
+        result_color+=(ambient+diffuse+specular);
         // TODO: For each light source in the code, calculate what the *ambient*, *diffuse*, and *specular* 
         // components are. Then, accumulate that result on the *result_color* object.
 
