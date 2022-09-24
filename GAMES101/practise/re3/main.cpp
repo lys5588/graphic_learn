@@ -193,7 +193,7 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
 
         //specular
         Eigen::Vector3f v=(eye_pos-point).normalized();
-        Eigen::Vector3f h=(v+light)/(v+light).norm();
+        Eigen::Vector3f h=(v+light.position)/(v+light.position).norm();
         float max_eng_spec=0<normal.dot(h) ? normal.dot(h):0;
         specular=ks.cwiseProduct(light.intensity)/pow(length,2)*pow(max_eng_spec,p);
         
