@@ -188,7 +188,7 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         //diffuse
         float max_eng_diff=normal.dot(light_vec);
         std::cout<<"hello: "<<normal<<"op"<<light_vec<<"op"<<max_eng_diff<<std::endl;
-        // max_eng_diff=std::max(0,max_eng_diff[0]);
+        max_eng_diff=std::max(0,max_eng_diff);
         // diffuse=kd.cwiseProduct(light.intensity)/pow(length,2)*max_eng_diff;
 
         // //specular
