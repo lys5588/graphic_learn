@@ -298,9 +298,9 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eig
                     auto pixel_color = fragment_shader(payload);  
 
                     
-    //                 set_pixel(Eigen::Vector2f(i,j),pixel_color);
-    //                 // std::cout<<t.getColor()<<"color"<<std::endl;
-    //                 depth_buf[index] = zp;//设置像素颜色，修改像素当前深度    
+                    set_pixel(Eigen::Vector2i(i,j),pixel_color);
+                    // std::cout<<t.getColor()<<"color"<<std::endl;
+                    depth_buf[index] = zp;//设置像素颜色，修改像素当前深度    
                 }
             }
         }
