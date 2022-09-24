@@ -220,11 +220,6 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         specular *= std::pow(std::max(0.0f,normal.normalized().dot(h)),p);
 
         
-        std::cout<<"a"<<ambient<<std::endl;
-        std::cout<<"b"<<diffuse<<std::endl;
-        std::cout<<"c"<<specular<<std::endl;
-        std::cout<<"res1"<<(ambient,diffuse,specular)<<std::endl;
-        std::cout<<"res2"<<result_color+((ambient+diffuse+specular))<<std::endl;
         result_color+=(ambient+diffuse+specular);
         // TODO: For each light source in the code, calculate what the *ambient*, *diffuse*, and *specular* 
         // components are. Then, accumulate that result on the *result_color* object.
