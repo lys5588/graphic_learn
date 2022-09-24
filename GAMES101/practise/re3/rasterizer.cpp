@@ -306,8 +306,8 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eig
         }
     }
 
-    std::cout<<"t:\n"<<t.v<<std::endl;
-    std::cout<<"view_point : \n 1"<<view_pos[0]<<"\n 2 "<<view_pos[1]<<"\n 3 "<<view_pos[2]<<std::endl;
+    // std::cout<<"t:\n"<<t.v<<std::endl;
+    // std::cout<<"view_point : \n 1"<<view_pos[0]<<"\n 2 "<<view_pos[1]<<"\n 3 "<<view_pos[2]<<std::endl;
     // TODO: From your HW3, get the triangle rasterization code.
     // TODO: Inside your rasterization loop:
     //    * v[i].w() is the vertex view space depth value z.
