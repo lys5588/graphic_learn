@@ -180,6 +180,9 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
     {   
         Eigen::Vector3f ambient,diffuse,specular;
         Eigen::Vector3f light_vec=(light.position-point).normalized();
+        Eigen::Vector3f v=(eye_pos-point).normalized();
+        Eigen::Vector3f h=(v+light.position)/(v+light.position).normalized();
+
         float length=light_vec.norm();
         
         //ambient
@@ -192,8 +195,6 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         diffuse=kd.cwiseProduct(light.intensity)/pow(length,2)*max_eng_diff;
 
         //specular
-        Eigen::Vector3f v=(eye_pos-point).normalized();
-        Eigen::Vector3f h=(v+light.position)/(v+light.position).norm();
         float max_eng_spec=0<normal.dot(h) ? normal.dot(h):0;
         specular=ks.cwiseProduct(light.intensity)/pow(length,2)*pow(max_eng_spec,p);
         
@@ -204,7 +205,7 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         
     }
 
-    return result_color * 500.f;
+    return result_color * 255.f;
 }
 
 
