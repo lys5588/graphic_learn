@@ -181,23 +181,23 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         Eigen::Vector3f ambient,diffuse,specular;
         Eigen::Vector3f light_vec=(light.position-point).normalized();
         Eigen::Vector3f v=(eye_pos-point).normalized();
-        Eigen::Vector3f h=(v+light.position)/(v+light.position).normalized();
+        Eigen::Vector3f h=(v+light.position).normalized();
 
-        float length=light_vec.norm();
+        //不可以使用归一化后的距离向量再计算长度
+        float length=(light.position-point).dot((light.position-point));
         
         //ambient
         ambient=ka.cwiseProduct(amb_light_intensity);
 
         //diffuse
-        float max_eng_diff=normal.dot(light_vec);
-        // std::cout<<"hello: "<<normal<<"op"<<light_vec<<"op"<<max_eng_diff<<std::endl;
-        max_eng_diff=0<max_eng_diff? max_eng_diff :0;
-        diffuse=kd.cwiseProduct(light.intensity)/pow(length,2)*max_eng_diff;
+        //normal should be normalized
+        diffuse=kd.cwiseProduct(light.intensity)/length;
+        diffuse *= std::max(0.0f, normal.normalized().dot(light_dir));
 
         //specular
-        float max_eng_spec=0<normal.dot(h) ? normal.dot(h):0;
-        specular=ks.cwiseProduct(light.intensity)/pow(length,2)*pow(max_eng_spec,p);
-        
+        specular=ks.cwiseProduct(light.intensity)/length;
+        specular *= std::pow(std::max(0.0f,normal.normalized().dot(h)),p);
+
         result_color+=(ambient,diffuse,specular);
 
         // TODO: For each light source in the code, calculate what the *ambient*, *diffuse*, and *specular* 
