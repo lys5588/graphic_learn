@@ -149,7 +149,7 @@ auto to_vec4(const Eigen::Vector3f& v3, float w = 1.0f)
     return Vector4f(v3.x(), v3.y(), v3.z(), w);
 }
 
-static bool insideTriangle(int x, int y, const Vector4f* _v){
+static bool insideTriangle(float x, float y, const Vector4f* _v){
     Vector3f v[3];
     for(int i=0;i<3;i++)
         v[i] = {_v[i].x(),_v[i].y(), 1.0};
@@ -273,25 +273,34 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eig
     for(int i = l_sc;i<r_sc;i++){
         for(int j=b_sc;j<t_sc;j++){
             
-            if(insideTriangle(i+0.5,j+0.5,t.v)){
+            if(insideTriangle(float(i)+0.5,float(j)+0.5,t.v)){
                 
                 //compute the interpolation result of z
                 auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
-                float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
-                float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
-                z_interpolated *= w_reciprocal;
+                
+                float Z = 1.0 / (alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
+                float zp = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
+                zp *= Z;
 
                 //setcolor
                 //遮挡判断
                 int index=get_index(i,j);
-                if(z_interpolated < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
-                    // TODO : set the current pixel (use the set_pixel function) to the color of the triangle (use getColor function) if it should be painted.
-                    Eigen::Vector3f pixel;
-                
-                    pixel<< i,j,z_interpolated;
-                    set_pixel(pixel,t.getColor());
+                if(zp < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
+                    //此处为在camara view下进行插值
+                    auto interpolated_color = interpolate(alpha,beta,gamma,t.color[0],t.color[1],t.color[2],1);
+                    auto interpolated_normal =interpolate(alpha,beta,gamma,t.normal[0],t.normal[1],t.normal[2],1);
+                    // auto interpolated_normal =interpolate(alpha,beta,gamma,t.normal[0],t.normal[1],t.normal[2],1).normalized();
+                    auto interpolated_texcoords=interpolate(alpha,beta,gamma,t.tex_coords[0],t.tex_coords[1],t.tex_coords[2],1);
+                    auto interpolated_shadingcoords=interpolate(alpha,beta,gamma,view_pos[0],view_pos[1],view_pos[2],1);
+
+                    fragment_shader_payload payload( interpolated_color, interpolated_normal.normalized(), interpolated_texcoords, texture ? &*texture : nullptr);
+                    payload.view_pos = interpolated_shadingcoords;
+                    auto pixel_color = fragment_shader(payload);  
+
+                    
+                    set_pixel(Eigen::Vector2f(i,j),pixel_color);
                     // std::cout<<t.getColor()<<"color"<<std::endl;
-                    depth_buf[index] = z_interpolated;//设置像素颜色，修改像素当前深度   
+                    depth_buf[index] = zp;//设置像素颜色，修改像素当前深度    
                     }
             }
         }
