@@ -74,6 +74,10 @@
         "iterator": "cpp",
         "memory_resource": "cpp",
         "utility": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "codecvt": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "stack": "cpp"
     }
 }
