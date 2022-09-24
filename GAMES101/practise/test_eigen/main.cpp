@@ -100,7 +100,9 @@ int main(){
     Eigen::Vector3f ka = Eigen::Vector3f(0.005, 0.005, 0.005);
     Eigen::Vector3f amb_light_intensity{10, 10, 10};
 
-    // Eigen::Vector3f result=ka*amb_light_intensity;
+    for(int i=0;i<3;i++){
+        
+    }
     cout<<ka;
     cout<<amb_light_intensity;
 }
