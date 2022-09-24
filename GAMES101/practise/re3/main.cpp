@@ -205,18 +205,18 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         Eigen::Vector3f h=(light_vec+v).normalized();
 
         //不可以使用归一化后的距离向量再计算长度,此处为长度的平方
-        float length2=(light.position-point).dot((light.position-point));
+        float length2=(light.position-point).dot(light.position-point);
         
         //ambient
         ambient=ka.cwiseProduct(amb_light_intensity);
 
         //diffuse
         //normal should be normalized
-        diffuse=kd.cwiseProduct(light.intensity)/length2;
+        diffuse=kd.cwiseProduct(light.intensity/length2);
         diffuse *= std::max(0.0f, normal.normalized().dot(light_vec));
 
         //specular
-        specular=ks.cwiseProduct(light.intensity)/length2;
+        specular=ks.cwiseProduct(light.intensity/length2);
         specular *= std::pow(std::max(0.0f,normal.normalized().dot(h)),p);
 
         result_color+=(ambient,diffuse,specular);
