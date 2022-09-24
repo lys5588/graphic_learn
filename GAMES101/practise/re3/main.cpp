@@ -187,16 +187,17 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
 
         //diffuse
         float max_eng_diff=normal.dot(light_vec);
-        max_eng_diff=std::max(0,max_eng_diff[0]);
-        diffuse=kd.cwiseProduct(light.intensity)/pow(length,2)*max_eng_diff;
+        std::cout<<normal<<"op"<<light_vec<<"op"<<max_eng_diff<<std::endl;
+        // max_eng_diff=std::max(0,max_eng_diff[0]);
+        // diffuse=kd.cwiseProduct(light.intensity)/pow(length,2)*max_eng_diff;
 
-        //specular
-        Eigen::Vector3f v=(eye_pos-point).normalized();
-        Eigen::Vector3f h=(v+light)/(v+light).norm();
-        float max_eng_spec=std::max(0,normal.dot(h));
-        specular=ks.cwiseProduct(light.intensity)/pow(length,2)*pow(max_eng_spec,p);
+        // //specular
+        // Eigen::Vector3f v=(eye_pos-point).normalized();
+        // Eigen::Vector3f h=(v+light)/(v+light).norm();
+        // float max_eng_spec=std::max(0,normal.dot(h));
+        // specular=ks.cwiseProduct(light.intensity)/pow(length,2)*pow(max_eng_spec,p);
         
-        result_color+=(ambient,diffuse,specular);
+        // result_color+=(ambient,diffuse,specular);
 
         // TODO: For each light source in the code, calculate what the *ambient*, *diffuse*, and *specular* 
         // components are. Then, accumulate that result on the *result_color* object.
