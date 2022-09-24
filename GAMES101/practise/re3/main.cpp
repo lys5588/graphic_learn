@@ -293,13 +293,30 @@ Eigen::Vector3f bump_fragment_shader(const fragment_shader_payload& payload)
     Eigen::Vector3f eye_pos{0, 0, 10};
 
     float p = 150;
-
+    //normal 为法线向量
     Eigen::Vector3f color = payload.color; 
     Eigen::Vector3f point = payload.view_pos;
     Eigen::Vector3f normal = payload.normal;
 
 
     float kh = 0.2, kn = 0.1;
+
+    float x,y,z=normal.x(),normal.y(),normal.z();
+    Eigen::Vector3f t = (x*y/sqrt(x*x+z*z),sqrt(x*x+z*z),z*y/sqrt(x*x+z*z));
+    Eigen::Vector3f b = n.cross(t);
+    Eigen::Matrix3f TBN;
+    TBN<<t.x(),b.x(),normal.x(),
+        t.y(),b.y(),normal.y(),
+        t.z(),b.z(),normal.z();
+    float dU = kh * kn * (payload.texture->getColor(u+1/w,v)-payload.texture->getColor(u,v));
+    float dV = kh * kn * (payload.texture->getColor(u,v+1/h)-payload.texture->getColor(u,v));
+
+    Eigen::Vector3f ln={-dU, -dV, 1}; 
+    Eigen::Vector3f n=(TBN * ln).normalized();
+    
+    //point modify
+    point += (kn * normal * payload.texture->getColor(u, v).norm());
+
 
     // TODO: Implement bump mapping here
     // Let n = normal = (x, y, z)
@@ -314,6 +331,35 @@ Eigen::Vector3f bump_fragment_shader(const fragment_shader_payload& payload)
 
     Eigen::Vector3f result_color = {0, 0, 0};
     result_color = normal;
+    //light 为光照位置
+    for (auto& light : lights)
+    {   
+        Eigen::Vector3f ambient,diffuse,specular;
+        Eigen::Vector3f light_vec=(light.position-point).normalized();
+        Eigen::Vector3f v=(eye_pos-point).normalized();
+        Eigen::Vector3f h=(light_vec+v).normalized();
+
+        //不可以使用归一化后的距离向量再计算长度,此处为长度的平方
+        float length2=(light.position-point).dot(light.position-point);
+        
+        //ambient
+        ambient=ka.cwiseProduct(amb_light_intensity);
+
+        //diffuse
+        //normal should be normalized
+        diffuse=kd.cwiseProduct(light.intensity)/length2;
+        diffuse *= std::max(0.0f, normal.normalized().dot(light_vec));
+
+        //specular
+        specular=ks.cwiseProduct(light.intensity)/length2;
+        specular *= std::pow(std::max(0.0f,normal.normalized().dot(h)),p);
+
+        
+        result_color+=(ambient+diffuse+specular);
+        // TODO: For each light source in the code, calculate what the *ambient*, *diffuse*, and *specular* 
+        // components are. Then, accumulate that result on the *result_color* object.
+        
+    }
 
     return result_color * 255.f;
 }
