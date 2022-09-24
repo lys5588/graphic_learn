@@ -65,7 +65,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
     //处理了bottom与top上下颠倒的问题
     float half_fov = eye_fov/2.0*MY_PI/180.0; //radium
     float bottum = zNear * tan(half_fov);
-    float top = -buttum;
+    float top = -bottum;
     float right = top * aspect_ratio;
     float left = -right;
     
@@ -186,7 +186,8 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         ambient=ka.cwiseProduct(amb_light_intensity);
 
         //diffuse
-        float max_eng_diff=std::max(0,normal.dot(light_vec));
+        float max_eng_diff=normal.dot(light_vec);
+        max_eng_diff=std::max(0,max_eng_diff);
         diffuse=kd.cwiseProduct(light.intensity)/pow(length,2)*max_eng_diff;
 
         //specular
