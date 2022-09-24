@@ -259,7 +259,7 @@ static Eigen::Vector2f interpolate(float alpha, float beta, float gamma, const E
 //Screen space rasterization
 void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eigen::Vector3f, 3>& view_pos) 
 {   
-    std::cout<<"t:\n"<<t.v()<<std::endl;
+    std::cout<<"t:\n"<<t.v<<std::endl;
     std::cout<<"view_point : \n 1"<<view_pos[0]<<"\n 2 "<<view_pos[1]<<"\n 3 "<<view_pos[2]<<std::endl;
     // TODO: From your HW3, get the triangle rasterization code.
     // TODO: Inside your rasterization loop:
