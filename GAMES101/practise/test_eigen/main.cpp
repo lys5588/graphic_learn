@@ -92,8 +92,14 @@ int main(){
     // cout<<res<<endl;
 
 
-    int x=433 ,y=307;
-    Eigen::Vector3f p0(542,434,0),p1(138,223,2),p2(434,307,9);
-    Eigen::Vector3f _v[3]={p0,p1,p2};
-    std::cout<<insideTriangle_my(x,y,_v);
+    // int x=433 ,y=307;
+    // Eigen::Vector3f p0(542,434,0),p1(138,223,2),p2(434,307,9);
+    // Eigen::Vector3f _v[3]={p0,p1,p2};
+    // std::cout<<insideTriangle_my(x,y,_v);
+
+    Eigen::Vector3f ka = Eigen::Vector3f(0.005, 0.005, 0.005);
+    Eigen::Vector3f amb_light_intensity{10, 10, 10};
+
+    Eigen::Vector3f result=ka*amb_light_intensity;
+    cout<<result;
 }
