@@ -221,8 +221,8 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
 
         
         std::cout<<"a"<<ambient<<std::endl;
-        std::cout<<"b"<<ambient<<std::endl;
-        std::cout<<"c"<<ambient<<std::endl;
+        std::cout<<"b"<<diffuse<<std::endl;
+        std::cout<<"c"<<specular<<std::endl;
         std::cout<<"res1"<<result_color+(ambient,diffuse,specular)<<std::endl;
         std::cout<<"res2"<<result_color+((ambient+diffuse+specular))<<std::endl;
         result_color+=(ambient+diffuse+specular);
