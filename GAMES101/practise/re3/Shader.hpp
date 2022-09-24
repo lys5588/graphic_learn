@@ -7,7 +7,7 @@
 #include <eigen3/Eigen/Eigen>
 #include "Texture.hpp"
 
-
+//着色材质类，存放贴图内容
 struct fragment_shader_payload
 {
     fragment_shader_payload()
