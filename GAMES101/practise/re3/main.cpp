@@ -204,7 +204,7 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         
     }
 
-    return result_color * 255.f;
+    return result_color * 500.f;
 }
 
 
