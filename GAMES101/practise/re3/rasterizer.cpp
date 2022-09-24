@@ -287,6 +287,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eig
                 int index=get_index(i,j);
                 if(zp < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
                     //此处为在camara view下进行插值
+                    //interpolated_texcoords 为camara view 下的重心坐标
                     auto interpolated_color = interpolate(alpha,beta,gamma,t.color[0],t.color[1],t.color[2],1);
                     auto interpolated_normal =interpolate(alpha,beta,gamma,t.normal[0],t.normal[1],t.normal[2],1);
                     // auto interpolated_normal =interpolate(alpha,beta,gamma,t.normal[0],t.normal[1],t.normal[2],1).normalized();
