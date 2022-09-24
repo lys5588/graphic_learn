@@ -270,21 +270,21 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eig
         t_sc=int(std::max(std::max(v[0](1),v[1](1)),v[2](1)))+1;
 
 
-    // for(int i = l_sc;i<r_sc;i++){
-    //     for(int j=b_sc;j<t_sc;j++){
+    for(int i = l_sc;i<r_sc;i++){
+        for(int j=b_sc;j<t_sc;j++){
             
-    //         if(insideTriangle(float(i)+0.5,float(j)+0.5,t.v)){
+            if(insideTriangle(float(i)+0.5,float(j)+0.5,t.v)){
                 
-    //             //compute the interpolation result of z
-    //             auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
+                //compute the interpolation result of z
+                auto[alpha, beta, gamma] = computeBarycentric2D(i+0.5, j+0.5, t.v);
                 
-    //             float Z = 1.0 / (alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
-    //             float zp = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
-    //             zp *= Z;
+                float Z = 1.0 / (alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
+                float zp = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
+                zp *= Z;
 
     //             //setcolor
     //             //遮挡判断
-    //             int index=get_index(i,j);
+                int index=get_index(i,j);
     //             if(zp < depth_buf[index]){//如果当前z值比像素z值小（这里是把z值换成正数比较的）
     //                 //此处为在camara view下进行插值
     //                 auto interpolated_color = interpolate(alpha,beta,gamma,t.color[0],t.color[1],t.color[2],1);
@@ -302,9 +302,9 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t, const std::array<Eig
     //                 // std::cout<<t.getColor()<<"color"<<std::endl;
     //                 depth_buf[index] = zp;//设置像素颜色，修改像素当前深度    
     //                 }
-    //         }
-    //     }
-    // }
+            }
+        }
+    }
 
     // std::cout<<"t:\n"<<t.v<<std::endl;
     // std::cout<<"view_point : \n 1"<<view_pos[0]<<"\n 2 "<<view_pos[1]<<"\n 3 "<<view_pos[2]<<std::endl;
