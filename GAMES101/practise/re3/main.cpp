@@ -192,7 +192,7 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         //diffuse
         //normal should be normalized
         diffuse=kd.cwiseProduct(light.intensity)/length;
-        diffuse *= std::max(0.0f, normal.normalized().dot(light_dir));
+        diffuse *= std::max(0.0f, normal.normalized().dot(light_vec));
 
         //specular
         specular=ks.cwiseProduct(light.intensity)/length;
