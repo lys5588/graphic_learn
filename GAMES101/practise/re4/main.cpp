@@ -82,7 +82,7 @@ int main()
             cv::circle(window, point, 3, {255, 255, 255}, 3);
         }
 
-        if (control_points.size() == 4) 
+        if (key == 27) 
         {
             naive_bezier(control_points, window);
             //   bezier(control_points, window);
