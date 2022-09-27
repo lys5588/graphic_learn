@@ -41,7 +41,7 @@ cv::Point2f recursive_bezier(const std::vector<cv::Point2f> &control_points, flo
         for(int j=0;i<point_num-i-1;j++){
             cv::Point2f p1=round_point_list[j];
             cv::Point2f p2=round_point_list[j+1];
-
+            std::cout<<"temp point"<<p1.x<<p1.y<<p2.x<<p2.y<<std::endl;
             cv::Point2f p_temp(p1.x*t+p2.x*(1-t),p1.y*t+p2.y*(1-t));
             temp_point_list.emplace_back(p_temp);
         }
