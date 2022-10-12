@@ -6,7 +6,26 @@
 
 bool rayTriangleIntersect(const Vector3f& v0, const Vector3f& v1, const Vector3f& v2, const Vector3f& orig,
                           const Vector3f& dir, float& tnear, float& u, float& v)
-{
+{   
+    auto S = orig - v0;
+    auto E1 = v1 - v0;
+    auto E2 = v2 - v0;
+    auto S1 = crossProduct(dir,E2);
+    auto S2 = crossProduct(S,E1);
+
+    float S1E1 = dotProduct(S1,E1);
+    float t = dotProduct(S1,E2) / S1E1;
+    auto b1 = dotProduct(S1,S) / S1E1;
+    auto b2 = dotProduct(S2,dir) / S1E1;
+
+    if(t>0.f && b1 > 0.f && b2 > 0.f && (1-b1-b2) > 0.f){
+        tnear = t;
+        u = b1;
+        v = b2;
+        return true;
+    }
+    
+
     // TODO: Implement this function that tests whether the triangle
     // that's specified bt v0, v1 and v2 intersects with the ray (whose
     // origin is *orig* and direction is *dir*)
