@@ -89,85 +89,85 @@ class Bounds3
 };
 
 
-// //need practise
-// inline bool Bounds3::IntersectP(const Ray& ray, const Vector3f& invDir,
-//                                 const std::array<int, 3>& dirIsNeg) const
-// {
-//     // invDir: ray direction(x,y,z), invDir=(1.0/x,1.0/y,1.0/z), use this because Multiply is faster that Division
-//     // dirIsNeg: ray direction(x,y,z), dirIsNeg=[int(x>0),int(y>0),int(z>0)], use this to simplify your logic
-//     // TODO test if ray bound intersects
-
-//     float x_min = (pMin.x - ray.origin.x) * invDir[0];
-//     float x_max = (pMin.x - ray.origin.x) * invDir[0];
-    
-//     float y_min = (pMin.y - ray.origin.y) * invDir[1];
-//     float y_max = (pMin.y - ray.origin.y) * invDir[1];
-
-//     float z_min = (pMin.z - ray.origin.z) * invDir[2];
-//     float z_max = (pMin.z - ray.origin.z) * invDir[2];
-
-//     if(dirIsNeg[0]){
-//         std::swap(x_min,x_max);
-//     }
-//     if(dirIsNeg[1]){
-//         std::swap(y_min,y_max);
-//     }
-//     if(dirIsNeg[2]){
-//         std::swap(z_min,z_max);
-//     }
-
-//     float enter = std::max(x_min,std::max(y_min,z_min));
-//     float exit = std::min(x_max,std::min(y_max,z_max));
-
-//     if(enter<exit && exit>=0) return true;
-//     return false;
-    
-
-// }
-
+//need practise
 inline bool Bounds3::IntersectP(const Ray& ray, const Vector3f& invDir,
                                 const std::array<int, 3>& dirIsNeg) const
 {
     // invDir: ray direction(x,y,z), invDir=(1.0/x,1.0/y,1.0/z), use this because Multiply is faster that Division
     // dirIsNeg: ray direction(x,y,z), dirIsNeg=[int(x>0),int(y>0),int(z>0)], use this to simplify your logic
     // TODO test if ray bound intersects
+
+    float x_min = (pMin.x - ray.origin.x) * invDir[0];
+    float x_max = (pMin.x - ray.origin.x) * invDir[0];
     
-    //计算进入x、y、z截面的最早和最晚时间
+    float y_min = (pMin.y - ray.origin.y) * invDir[1];
+    float y_max = (pMin.y - ray.origin.y) * invDir[1];
 
-    float min_x = (pMin.x - ray.origin.x) * invDir[0];
-    float max_x = (pMax.x - ray.origin.x) * invDir[0];
+    float z_min = (pMin.z - ray.origin.z) * invDir[2];
+    float z_max = (pMin.z - ray.origin.z) * invDir[2];
 
-    float min_y = (pMin.y - ray.origin.y) * invDir[1];
-    float max_y = (pMax.y - ray.origin.y) * invDir[1];
-
-    float min_z = (pMin.z - ray.origin.z) * invDir[2];
-    float max_z = (pMax.z - ray.origin.z) * invDir[2];
-
-    //如果方向为负（反向），就交换最早和最晚时间
-    if (dirIsNeg[0])
-    {
-        std::swap(min_x, max_x);
+    if(dirIsNeg[0]){
+        std::swap(x_min,x_max);
+    }
+    if(dirIsNeg[1]){
+        std::swap(y_min,y_max);
+    }
+    if(dirIsNeg[2]){
+        std::swap(z_min,z_max);
     }
 
-    if (dirIsNeg[1])
-    {
-        std::swap(min_y, max_y);
-    }
+    float enter = std::max(x_min,std::max(y_min,z_min));
+    float exit = std::min(x_max,std::min(y_max,z_max));
 
-    if (dirIsNeg[2])
-    {
-        std::swap(min_z, max_z);
-    }
+    if(enter<exit && exit>=0) return true;
+    return false;
+    
 
-    float enter = std::max(min_x, std::max(min_y, min_z));
-    float exit = std::min(max_x, std::min(max_y, max_z));
-
-    if (enter < exit && exit >= 0)
-    {
-        return true;
-    }
-    else return false;
 }
+
+// inline bool Bounds3::IntersectP(const Ray& ray, const Vector3f& invDir,
+//                                 const std::array<int, 3>& dirIsNeg) const
+// {
+//     // invDir: ray direction(x,y,z), invDir=(1.0/x,1.0/y,1.0/z), use this because Multiply is faster that Division
+//     // dirIsNeg: ray direction(x,y,z), dirIsNeg=[int(x>0),int(y>0),int(z>0)], use this to simplify your logic
+//     // TODO test if ray bound intersects
+    
+//     //计算进入x、y、z截面的最早和最晚时间
+
+//     float min_x = (pMin.x - ray.origin.x) * invDir[0];
+//     float max_x = (pMax.x - ray.origin.x) * invDir[0];
+
+//     float min_y = (pMin.y - ray.origin.y) * invDir[1];
+//     float max_y = (pMax.y - ray.origin.y) * invDir[1];
+
+//     float min_z = (pMin.z - ray.origin.z) * invDir[2];
+//     float max_z = (pMax.z - ray.origin.z) * invDir[2];
+
+//     //如果方向为负（反向），就交换最早和最晚时间
+//     if (dirIsNeg[0])
+//     {
+//         std::swap(min_x, max_x);
+//     }
+
+//     if (dirIsNeg[1])
+//     {
+//         std::swap(min_y, max_y);
+//     }
+
+//     if (dirIsNeg[2])
+//     {
+//         std::swap(min_z, max_z);
+//     }
+
+//     float enter = std::max(min_x, std::max(min_y, min_z));
+//     float exit = std::min(max_x, std::min(max_y, max_z));
+
+//     if (enter < exit && exit >= 0)
+//     {
+//         return true;
+//     }
+//     else return false;
+// }
 
 inline Bounds3 Union(const Bounds3& b1, const Bounds3& b2)
 {
