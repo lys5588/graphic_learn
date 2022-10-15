@@ -208,10 +208,46 @@ inline bool Triangle::intersect(const Ray& ray, float& tnear,
 
 inline Bounds3 Triangle::getBounds() { return Union(Bounds3(v0, v1), v2); }
 
+// inline Intersection Triangle::getIntersection(Ray ray)
+// {
+//     Intersection inter;
+
+//     if (dotProduct(ray.direction, normal) > 0)
+//         return inter;
+//     double u, v, t_tmp = 0;
+//     Vector3f pvec = crossProduct(ray.direction, e2);
+//     double det = dotProduct(e1, pvec);
+//     if (fabs(det) < EPSILON)
+//         return inter;
+
+//     double det_inv = 1. / det;
+//     Vector3f tvec = ray.origin - v0;
+//     u = dotProduct(tvec, pvec) * det_inv;
+//     if (u < 0 || u > 1)
+//         return inter;
+//     Vector3f qvec = crossProduct(tvec, e1);
+//     v = dotProduct(ray.direction, qvec) * det_inv;
+//     if (v < 0 || u + v > 1)
+//         return inter;
+//     t_tmp = dotProduct(e2, qvec) * det_inv;
+
+//     // TODO find ray triangle intersection
+//     if(t_tmp<0)
+//         return inter;
+//     inter.distance = t_tmp;
+//     inter.happened=true;
+//     inter.m = m;
+//     inter.obj = this;
+//     inter.normal = normal;
+//     inter.coords = ray(t_tmp);
+//     return inter;
+// }
+
 inline Intersection Triangle::getIntersection(Ray ray)
 {
     Intersection inter;
 
+    //实现判断光线是否与三角形面相交
     if (dotProduct(ray.direction, normal) > 0)
         return inter;
     double u, v, t_tmp = 0;
@@ -232,14 +268,15 @@ inline Intersection Triangle::getIntersection(Ray ray)
     t_tmp = dotProduct(e2, qvec) * det_inv;
 
     // TODO find ray triangle intersection
-    if(t_tmp<0)
+
+    if (t_tmp < 0)
         return inter;
-    inter.distance = t_tmp;
-    inter.happened=true;
-    inter.m = m;
-    inter.obj = this;
-    inter.normal = normal;
-    inter.coords = ray(t_tmp);
+    inter.distance = t_tmp;//光线经过的时间
+    inter.happened = true;//是否与三角形相交
+    inter.m = m;//三角形的材质
+    inter.obj = this;//Triangle继承了Object，重写了virtual Intersection getIntersection(Ray _ray)，三角形调用getIntersection(Ray _ray)，intersection自然记录下当前在相交的三角形，所以用this
+    inter.normal = normal;//三角形面的法线
+    inter.coords = ray(t_tmp);//Vector3f operator()(double t) const{return origin+direction*t;} in Ray.hpp, coords表示相交点的坐标
     return inter;
 }
 
